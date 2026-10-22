@@ -1,93 +1,115 @@
-# Graph Search System using BFS and DFS
+# SLE-3: C4 Architecture Design of Graph Search System using BFS and DFS
 
-This project implements graph search on a directed graph using two uninformed search strategies:
+## Course Information
 
-- **Breadth-First Search (BFS)** using a queue
-- **Depth-First Search (DFS)** using a stack
+| Field | Details |
+|---|---|
+| Course | 02AML204 – Introduction to Artificial Intelligence |
+| Activity | SLE-3 |
+| Project | Graph Search System using BFS and DFS |
+| Architecture Model | C4 Model |
+| Diagram Tool | diagrams.net (draw.io) |
+| Previous Activity | SLE-2: BFS vs DFS Empirical Performance Analysis |
+| Author | Shreyash Potdar |
 
-Given a graph, start node, and goal node, the program searches for a valid route, records the explored nodes, reconstructs the path, and reports the number of expanded nodes.
+## Project Overview
 
-## Project Objectives
+This project presents the software architecture of a Graph Search System using Breadth-First Search (BFS) and Depth-First Search (DFS).
 
-- Compare BFS and DFS on the same directed graph.
-- Find a path from the start node to the goal node.
-- Prevent repeated exploration using a visited set.
-- Measure path length, nodes expanded, and execution time.
-- Document the system architecture through C4 diagrams and an Architecture Decision Record (ADR).
+The system accepts a directed graph, a start node, and a goal node. It uses BFS or DFS to find a path and provides the search result, path length, and number of expanded nodes.
 
-## Core Design
+The architecture is represented using the four levels of the C4 model: Context, Container, Component, and Code.
 
-The system uses the following main functions and data items:
+## Objectives
 
-| Item | Purpose |
-| --- | --- |
-| `bfs(graph, start, goal)` | Performs Breadth-First Search using a queue. |
-| `dfs(graph, start, goal)` | Performs Depth-First Search using a stack. |
-| `graph` | Stores directed graph connections. |
-| `visited` | Tracks explored nodes and prevents duplicate exploration. |
-| `path` | Stores the route from the start node to the goal node. |
-| `nodes_expanded` | Counts nodes explored during the search. |
+- To understand and apply the C4 architecture model.
+- To design four levels of architecture diagrams.
+- To represent the BFS and DFS Graph Search System clearly.
+- To identify the main modules and components of the system.
+- To connect the architecture design with the SLE-2 implementation.
 
-## Search Flow
+## C4 Architecture Diagrams
 
-1. Provide a directed graph, start node, and goal node.
-2. Select BFS or DFS.
-3. Add the start node to the frontier.
-4. Remove a node from the frontier and check whether it is the goal.
-5. Add unvisited neighbours to the frontier and record them as visited.
-6. Reconstruct and display the path when the goal is found.
+### Level 1 – Context Diagram
 
-## Why a Visited Set Is Used
+The Context Diagram represents the interaction between the user and the Graph Search System.
 
-Graphs can contain cycles and multiple paths to the same node. The visited set makes sure that a node is explored only once. This prevents repeated work, avoids infinite loops on cyclic graphs, and keeps the node-expansion count meaningful for performance comparison.
+It includes:
+- User
+- Graph Search System (BFS/DFS)
+- Search Result / Path Output
 
-## SLE-2 Performance Results
+The user provides the graph, start node, goal node, and algorithm selection. The system returns the path, path length, nodes expanded, and search result.
 
-Both algorithms found the following path:
+### Level 2 – Container Diagram
 
-`A -> C -> F -> J -> N -> R -> V -> X -> Z`
+The Container Diagram represents the six major functional modules of the system.
 
-| Metric | BFS | DFS |
-| --- | ---: | ---: |
-| Path length (edges) | 8 | 8 |
-| Nodes expanded | 25 | 20 |
-| Run 1 (ms) | 1099.568 | 1098.097 |
-| Run 2 (ms) | 1062.292 | 1216.371 |
-| Run 3 (ms) | 1048.642 | 1179.768 |
-| Average time (ms) | 1070.167 | 1164.746 |
-| Average time per search (ms) | 0.010702 | 0.011647 |
-| Searches per run | 100,000 | 100,000 |
+| Container | Responsibility |
+|---|---|
+| Input Module | Accepts graph, start node, goal node, and algorithm |
+| Graph / Problem Representation | Stores graph structure and node relationships |
+| Search Engine | Executes BFS or DFS |
+| Visited / Memory | Tracks explored nodes |
+| Goal Test & Path Handling | Checks the goal and maintains the path |
+| Output Module | Displays the path and search results |
 
-For this benchmark, BFS had the lower average execution time, while DFS expanded five fewer nodes. Both found a path of the same length.
+### Level 3 – Component Diagram
 
-## Architecture
+The Component Diagram focuses on the internal structure of the Search Engine.
 
-The system was documented using the C4 model:
+| Component | Responsibility |
+|---|---|
+| BFS / DFS Controller | Controls the selected search algorithm |
+| Frontier (Queue / Stack) | Maintains nodes waiting for exploration |
+| Explored / Closed Set | Tracks visited nodes |
+| Goal Test | Checks whether the goal node is reached |
+| Path Reconstructor | Represents the path-handling logic |
 
-- **Context:** A user provides graph input and receives the search result.
-- **Container:** Input, graph representation, search processing, memory management, path handling, and output work together.
-- **Component:** The Search Engine contains the BFS/DFS controller, frontier, explored or closed set, goal test, and path reconstructor.
-- **Code:** The `bfs()` and `dfs()` functions use `graph`, `visited`, `path`, and `nodes_expanded`.
+### Level 4 – Code Level Overview
 
-## How to Run
+The Code Level represents the main functions and variables used in the BFS and DFS implementation.
 
-Run the Python file that contains the `bfs()` and `dfs()` functions using Python 3:
+| Function / Variable | Purpose |
+|---|---|
+| `bfs(graph, start, goal)` | Performs BFS using a queue |
+| `dfs(graph, start, goal)` | Performs DFS using a stack |
+| `graph` | Stores directed graph connections |
+| `visited` | Tracks explored nodes |
+| `path` | Maintains the search path |
+| `nodes_expanded` | Counts expanded nodes |
 
-```bash
-python <your_python_file>.py
-```
+## Design Decisions
 
-No external Python packages are required for the core graph search implementation.
+The system is divided into separate modules for input, graph representation, search processing, memory management, path handling, and output.
 
-## Course Context
+BFS uses a queue, while DFS uses a stack. Both algorithms operate on the same graph-search problem.
 
-- **Course:** 02AML204 - Introduction to Artificial Intelligence
-- **Student:** Shreyash Potdar
+A visited set prevents repeated node expansion, and separate goal testing and path handling make the architecture easier to understand.
 
-## Documentation
+## Tools Used
 
-- SLE-1: BFS and DFS implementation with an AI contribution log.
-- SLE-2: Performance comparison of BFS and DFS.
-- SLE-3: C4 architecture diagrams.
-- SLE-4: Architecture Decision Record defending the use of a visited set.
+- Python – BFS and DFS implementation from SLE-2
+- Visual Studio Code – Development environment
+- diagrams.net (draw.io) – C4 architecture diagrams
+- Microsoft Word – Architecture report
+- GitHub – Project documentation and version control
+- ChatGPT – AI assistance
 
+## Project Files
+
+| File | Description |
+|---|---|
+| `C4_Level1_Context.png` | Level 1 Context Diagram |
+| `C4_Level2_Container.png` | Level 2 Container Diagram |
+| `C4_Level3_Component.png` | Level 3 Component Diagram |
+| `C4_Level4_Code.png` | Level 4 Code Level Overview |
+| `SLE3_Report.docx` | Final SLE-3 architecture report |
+| `README.md` | Project documentation |
+| `AI_ContributionLog.md` | Student and AI contribution record |
+
+## Conclusion
+
+The SLE-3 activity successfully represents the BFS and DFS Graph Search System using the four levels of the C4 architecture model.
+
+The diagrams explain the system from high-level user interaction to its main implementation functions. The architecture is simple, modular, and connected to the BFS and DFS implementation developed in SLE-2.
